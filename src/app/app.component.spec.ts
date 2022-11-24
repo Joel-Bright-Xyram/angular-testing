@@ -15,4 +15,12 @@ describe('AppComponent', () => {
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
+
+  it('toBe and ToEqual test case', () => {
+    var a = 'Hello';
+    var b = 'Hello';
+
+    expect(a).toBe(b);
+    expect(a).toEqual(b);
+  });
 });
