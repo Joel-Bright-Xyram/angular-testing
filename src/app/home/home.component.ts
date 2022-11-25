@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
     role: String;
     pokemon: String;
   }[] = [];
+  ec = 0;
 
   constructor(private usersService: UsersService) {}
 
@@ -20,5 +21,19 @@ export class HomeComponent implements OnInit {
     this.usersService.all().subscribe((res) => {
       this.users = res;
     });
+  }
+
+  myFunc(newEmpCount: string) {
+    this.ec = parseInt(newEmpCount);
+    if (isNaN(this.ec)) {
+      console.log(
+        'No numerical value for EmpCount found, "' +
+          newEmpCount +
+          `" was passed instead.`
+      );
+    } else {
+      console.log(`Generating ${this.ec} new employees!`);
+      this.usersService.generateEmployees(this.ec);
+    }
   }
 }
