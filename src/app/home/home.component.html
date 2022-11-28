@@ -12,7 +12,7 @@
               matInput
               type="number"
               name="newEmployeesCount"
-              class="input is-mediun is-two-fifths"
+              class="input is-mediun is-one-fifth"
               placeholder="Enter a number"
               min="0"
             />
@@ -33,13 +33,33 @@
       <div class="column is-one-fifth" *ngFor="let user of users">
         <div class="box">
           <div class="content">
-            <p class="has-text-centered is-size-5">
+            <p
+              class="has-text-centered is-size-5"
+              title="{{ user.id }} - {{ user.name }}"
+            >
               {{ user.name }}
             </p>
             <ul>
               <li><strong>Role: </strong>{{ user.role }}</li>
               <li><strong>Pokemon: </strong>{{ user.pokemon }}</li>
             </ul>
+            <div class="control">
+              <button
+                class="button is-primary is-small"
+                (click)="
+                  fetchPokemonData(
+                    user.pokemonUrl.toString(),
+                    user.id + ' - ' + user.name + ' - ' + user.pokemon
+                  )
+                "
+              >
+                Fetch data of {{ user.pokemon }}
+              </button>
+            </div>
+            <div
+              id="{{ user.id }} - {{ user.name }} - {{ user.pokemon }}"
+              class="content"
+            ></div>
           </div>
         </div>
       </div>

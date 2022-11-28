@@ -15,13 +15,16 @@ export class UsersService {
     'Documentaion',
   ];
 
-  pokemonList = ['Arceus'];
+  pokemonList = [
+    { name: 'Arceus', url: 'https://pokeapi.co/api/v2/pokemon/493/' },
+  ];
 
   users: {
     id: String;
     name: String;
     role: String;
     pokemon: String;
+    pokemonUrl: String;
   }[] = [
     // Add employee object
     {
@@ -29,24 +32,28 @@ export class UsersService {
       name: 'Jane',
       role: 'Designer',
       pokemon: 'Blastoise',
+      pokemonUrl: 'https://pokeapi.co/api/v2/pokemon/9/',
     },
     {
       id: '2',
       name: 'Bob',
       role: 'Developer',
       pokemon: 'Charizard',
+      pokemonUrl: 'https://pokeapi.co/api/v2/pokemon/6/',
     },
     {
       id: '3',
       name: 'Jim',
       role: 'Developer',
       pokemon: 'Venusaur',
+      pokemonUrl: 'https://pokeapi.co/api/v2/pokemon/3/',
     },
     {
       id: '4',
       name: 'Adam',
       role: 'Designer',
       pokemon: 'Butterfree',
+      pokemonUrl: 'https://pokeapi.co/api/v2/pokemon/12/',
     },
   ];
 
@@ -55,7 +62,7 @@ export class UsersService {
       .then((response) => response.json())
       .then((allpokemon) => {
         allpokemon.results.forEach((pokemon: { name: string; url: string }) => {
-          this.pokemonList.push(pokemon.name);
+          this.pokemonList.push(pokemon);
         });
       });
   }
@@ -71,6 +78,7 @@ export class UsersService {
       name: String;
       role: String;
       pokemon: String;
+      pokemonUrl: String;
     }>
   > {
     return of(this.users);
@@ -81,6 +89,7 @@ export class UsersService {
     name: String;
     role: String;
     pokemon: String;
+    pokemonUrl: String;
   }> {
     const user = this.users.find((u: any) => {
       return u.id === id;
@@ -89,6 +98,7 @@ export class UsersService {
       name: 'Karen',
       role: 'Disruption',
       pokemon: 'Zubat',
+      pokemonUrl: 'https://pokeapi.co/api/v2/pokemon/41/',
     };
 
     return of(user);
@@ -105,11 +115,12 @@ export class UsersService {
     return greatest;
   }
 
-  fetchRandomPokemon(): string {
+  fetchRandomPokemon(): { name: string; url: string } {
     var randomPokemon =
       this.pokemonList[this.getRandomIndex(this.pokemonList.length)];
-    randomPokemon =
-      randomPokemon.charAt(0).toUpperCase() + randomPokemon.substring(1);
+    randomPokemon.name =
+      randomPokemon.name.charAt(0).toUpperCase() +
+      randomPokemon.name.substring(1);
     return randomPokemon;
   }
 
@@ -129,12 +140,14 @@ export class UsersService {
     var min = this.greatestId();
     var max = newCount + min;
 
-    for (var i = min; i <= max; i += 1) {
+    for (var i = min + 1; i <= max; i += 1) {
+      var randomPokemon = this.fetchRandomPokemon();
       this.users.push({
         id: i.toString(),
         name: this.randomName(),
         role: this.roleList[this.getRandomIndex(this.roleList.length)],
-        pokemon: this.fetchRandomPokemon(),
+        pokemon: randomPokemon.name,
+        pokemonUrl: randomPokemon.url,
       });
     }
     console.log(
